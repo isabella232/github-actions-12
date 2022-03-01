@@ -16,6 +16,7 @@ inputs:
 runs:
   using: 'composite'
   steps:
+    - name: Run test
     env:
       ALLOW_FAILURE: false
       POLARIS_ACCESS_TOKEN: ${{ inputs.access_token }}
