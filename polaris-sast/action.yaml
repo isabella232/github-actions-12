@@ -6,13 +6,12 @@ inputs:
   directory_path:
     description: "Full or a relative path of the directory where the action should run"
     required: true
-env:
-  ALLOW_FAILURE: false
-  POLARIS_API_URL: ${{ secrets.POLARIS_API_URL }}
-  POLARIS_ACCESS_TOKEN: ${{ secrets.POLARIS_ACCESS_TOKEN }}
-  GIT_BRANCH: ${{ github.ref_name }}
-  
+
 run: |
+  ALLOW_FAILURE=false
+  POLARIS_API_URL=${{ secrets.POLARIS_API_URL }}
+  POLARIS_ACCESS_TOKEN=${{ secrets.POLARIS_ACCESS_TOKEN }}
+  GIT_BRANCH=${{ github.ref_name }}
   ls
   pwd
   initial_dir=$(pwd)
