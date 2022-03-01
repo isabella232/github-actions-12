@@ -13,10 +13,19 @@ env:
   GIT_BRANCH: ${{ github.ref_name }}
   
 run: |
+  ls
+  pwd
   initial_dir=$(pwd)
   cd ${{inputs.directory_path}}
+  ls
+  pwd
   wget -q ${{ secrets.POLARIS_API_URL }}/api/tools/polaris_cli-linux64.zip
   unzip -j polaris_cli-linux64.zip -d /tmp
   /tmp/polaris analyze --upload-local-config
+  ls
+  pwd
+  unlink polaris_cli-linux64.zip
+  rm -rf /tmp/polaris_cli-linux64
   cd $initial_dir
-  
+  ls
+  pwd
