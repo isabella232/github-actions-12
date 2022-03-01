@@ -11,9 +11,6 @@ env:
   POLARIS_API_URL: ${{ secrets.POLARIS_API_URL }}
   POLARIS_ACCESS_TOKEN: ${{ secrets.POLARIS_ACCESS_TOKEN }}
   GIT_BRANCH: ${{ github.ref_name }}
-  POLARIS_RUN_DIRECTORY_PATH
-
-  
   
 run: |
   initial_dir=$(pwd)
