@@ -1,6 +1,6 @@
 name: Polaris SAST
 description: Run Polaris static application security test
-shell: bash
+
 
 inputs:
   directory_path:
@@ -13,24 +13,28 @@ inputs:
     description: "Polaris access token"
     required: true
 
-run: |
-  ALLOW_FAILURE=false
-  POLARIS_API_URL=${{ inputs.api_url }}
-  POLARIS_ACCESS_TOKEN=${{ inputs.access_token }}
-  GIT_BRANCH=${{ github.ref_name }}
-  ls
-  pwd
-  initial_dir=$(pwd)
-  cd ${{ inputs.directory_path }}
-  ls
-  pwd
-  wget -q ${{ secrets.POLARIS_API_URL }}/api/tools/polaris_cli-linux64.zip
-  unzip -j polaris_cli-linux64.zip -d /tmp
-  /tmp/polaris analyze --upload-local-config
-  ls
-  pwd
-  unlink polaris_cli-linux64.zip
-  rm -rf /tmp/polaris_cli-linux64
-  cd $initial_dir
-  ls
-  pwd
+runs:
+  using: 'composite'
+  steps:
+    shell: bash
+    env:
+      ALLOW_FAILURE: false
+      POLARIS_ACCESS_TOKEN: ${{ inputs.access_token }}
+      GIT_BRANCH: ${{ github.ref_name }}
+    run: |
+      ls
+      pwd
+      initial_dir=$(pwd)
+      cd ${{ inputs.directory_path }}
+      ls
+      pwd
+      wget -q ${{ inputs.api_url }}/api/tools/polaris_cli-linux64.zip
+      unzip -j polaris_cli-linux64.zip -d /tmp
+      /tmp/polaris analyze --upload-local-config
+      ls
+      pwd
+      unlink polaris_cli-linux64.zip
+      rm -rf /tmp/polaris_cli-linux64
+      cd $initial_dir
+      ls
+      pwd
