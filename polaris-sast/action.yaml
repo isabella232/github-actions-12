@@ -6,16 +6,22 @@ inputs:
   directory_path:
     description: "Full or a relative path of the directory where the action should run"
     required: true
+  api_url:
+    description: "Polaris API URL"
+    required: true
+  access_token:
+    description: "Polaris access token"
+    required: true
 
 run: |
   ALLOW_FAILURE=false
-  POLARIS_API_URL=${{ secrets.POLARIS_API_URL }}
-  POLARIS_ACCESS_TOKEN=${{ secrets.POLARIS_ACCESS_TOKEN }}
+  POLARIS_API_URL=${{ inputs.api_url }}
+  POLARIS_ACCESS_TOKEN=${{ inputs.access_token }}
   GIT_BRANCH=${{ github.ref_name }}
   ls
   pwd
   initial_dir=$(pwd)
-  cd ${{inputs.directory_path}}
+  cd ${{ inputs.directory_path }}
   ls
   pwd
   wget -q ${{ secrets.POLARIS_API_URL }}/api/tools/polaris_cli-linux64.zip
