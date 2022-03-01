@@ -1,6 +1,5 @@
 name: Polaris SAST
 description: Run Polaris static application security test
-shell: bash
 
 inputs:
   directory_path:
@@ -17,6 +16,7 @@ runs:
   using: 'composite'
   steps:
     - name: Run test
+    shell: bash
     env:
       ALLOW_FAILURE: false
       POLARIS_ACCESS_TOKEN: ${{ inputs.access_token }}
