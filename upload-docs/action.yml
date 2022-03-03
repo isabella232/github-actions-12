@@ -22,6 +22,10 @@ runs:
         echo Create a temporary directory for docs content
         mkdir -p _docs
         ls -al
+        echo Find readme.md file and copy to temporary directory [1]
+        find -iname readme.md
+        echo Find readme.md file and copy to temporary directory [2]
+        find ./ -iname readme.md
         echo Find readme.md file and copy to temporary directory
         find -iname readme.md -exec cp {} ./_docs
         cd ./_docs
