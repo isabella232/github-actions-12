@@ -1,39 +1,18 @@
 name: Polaris SAST
 description: Run Polaris static application security test
 
-inputs:
-  directory_path:
-    description: "Full or a relative path of the directory where the action should run"
-    required: true
-  api_url:
-    description: "Polaris API URL"
-    required: true
-  access_token:
-    description: "Polaris access token"
-    required: true
-
 runs:
   using: 'composite'
   steps:
     - shell: bash
       env:
-        ALLOW_FAILURE: false
-        POLARIS_ACCESS_TOKEN: ${{ inputs.access_token }}
+        POLARIS_ACCESS_TOKEN: ${{ secrets.POLARIS_ACCESS_TOKEN }}
         GIT_BRANCH: ${{ github.ref_name }}
       run: |
-        ls
-        pwd
-        initial_dir=$(pwd)
-        cd ${{ inputs.directory_path }}
-        ls
-        pwd
-        wget -q ${{ inputs.api_url }}/api/tools/polaris_cli-linux64.zip
+        ls -al
+        echo Current directory: $(pwd)
+        wget -q ${{ secrets.POLARIS_API_URL }}/api/tools/polaris_cli-linux64.zip
         unzip -j polaris_cli-linux64.zip -d /tmp
         /tmp/polaris analyze --upload-local-config
-        ls
-        pwd
         unlink polaris_cli-linux64.zip
         rm -rf /tmp/polaris_cli-linux64
-        cd $initial_dir
-        ls
-        pwd
