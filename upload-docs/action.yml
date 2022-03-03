@@ -9,12 +9,12 @@ inputs:
 runs:
   using: 'composite'
   steps:
-#     - name: Upload docs
-#       uses: google-github-actions/setup-gcloud@v0.2.1
-#       with:
-#           project_id: prod-econo-cm
-#           service_account_key: ${{ inputs.docs_bucket_sa }}
-#           export_default_credentials: true  
+    - name: Setup gcloud credentials
+      uses: google-github-actions/setup-gcloud@v0.2.1
+      with:
+          project_id: prod-econo-cm
+          service_account_key: ${{ inputs.docs_bucket_sa }}
+          export_default_credentials: true  
     
     - name: Upload docs
       shell: bash
