@@ -1,0 +1,19 @@
+name: Upload docs
+description: Upload documentation
+
+runs:
+  using: 'composite'
+  steps:
+    - shell: bash
+      run: |
+        echo Create a temporary directory for docs content
+        mkdir -p _docs
+        echo Find readme.md file and copy to temporary directory
+        find -iname readme.md -exec cp {} ./_docs
+        cd ./_docs
+        echo Upload docs to Google Cloud Storage
+        gsutil -m cp -R gs://prod-econo-cm_docs/* .
+        cd ..
+        echo Remove temporary docs directory
+        rm -rf _docs
+        
