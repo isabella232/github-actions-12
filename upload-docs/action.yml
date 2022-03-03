@@ -1,10 +1,23 @@
 name: Upload docs
 description: Upload documentation
 
+inputs:
+  docs_bucket_sa:
+    description: "Documentatino bucket service account"
+    required: true
+    
 runs:
   using: 'composite'
   steps:
-    - shell: bash
+    - name: Upload docs
+      uses: google-github-actions/setup-gcloud@v0.2.1
+      with:
+          project_id: prod-econo-cm
+          service_account_key: ${{ inputs.docs_bucket_sa }}
+          export_default_credentials: true  
+    
+    - name: Upload docs
+      shell: bash
       run: |
         echo Create a temporary directory for docs content
         mkdir -p _docs
