@@ -9,21 +9,23 @@ inputs:
 runs:
   using: 'composite'
   steps:
-    - name: Upload docs
-      uses: google-github-actions/setup-gcloud@v0.2.1
-      with:
-          project_id: prod-econo-cm
-          service_account_key: ${{ inputs.docs_bucket_sa }}
-          export_default_credentials: true  
+#     - name: Upload docs
+#       uses: google-github-actions/setup-gcloud@v0.2.1
+#       with:
+#           project_id: prod-econo-cm
+#           service_account_key: ${{ inputs.docs_bucket_sa }}
+#           export_default_credentials: true  
     
     - name: Upload docs
       shell: bash
       run: |
         echo Create a temporary directory for docs content
         mkdir -p _docs
+        ls -al
         echo Find readme.md file and copy to temporary directory
         find -iname readme.md -exec cp {} ./_docs
         cd ./_docs
+        ls -al
         echo Upload docs to Google Cloud Storage
         gsutil -m cp -R gs://prod-econo-cm_docs/* .
         cd ..
