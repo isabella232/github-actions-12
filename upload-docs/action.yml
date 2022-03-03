@@ -22,7 +22,7 @@ runs:
         echo Create a temporary directory for docs content
         mkdir -p _docs
         echo Find readme.md file and copy to temporary directory
-        find -iname readme.md -exec cp "{}" ./_docs
+        find -iname readme.md -exec cp {} ./_docs \;
         cd ./_docs
         ls -al
         echo Upload docs to Google Cloud Storage
