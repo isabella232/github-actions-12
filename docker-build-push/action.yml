@@ -1,0 +1,35 @@
+name: Docker build and push
+description: Build and push docker image
+
+inputs:
+  registry:
+    description: "Registry name"
+    required: true
+    default: "eu.gcr.io"
+  username:
+    description: "Registry username"
+    required: true
+    default: "_json_key"
+  password:
+    description: "Registry password"
+    required: true
+  tags:
+    description: "List of tags"
+    required: true
+    
+runs:
+  using: 'composite'
+  steps:
+    - name: Login to google container repo
+        uses: docker/login-action@v1 
+        with:
+          registry: ${{ inputs.registry }}
+          username: ${{ inputs.username }}
+          password: ${{ inputs.password }}
+
+    - name: Tag and publish
+      uses: docker/build-push-action@v2
+      with:
+        context: .
+        push: true
+        tags: ${{ inputs.tags }}
