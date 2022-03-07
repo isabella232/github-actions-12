@@ -21,11 +21,11 @@ runs:
   using: 'composite'
   steps:
     - name: Login to google container repo
-        uses: docker/login-action@v1 
-        with:
-          registry: ${{ inputs.registry }}
-          username: ${{ inputs.username }}
-          password: ${{ inputs.password }}
+      uses: docker/login-action@v1 
+      with:
+        registry: ${{ inputs.registry }}
+        username: ${{ inputs.username }}
+        password: ${{ inputs.password }}
 
     - name: Tag and publish
       uses: docker/build-push-action@v2
