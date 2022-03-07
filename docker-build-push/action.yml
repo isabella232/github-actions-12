@@ -20,6 +20,11 @@ inputs:
 runs:
   using: 'composite'
   steps:
+    - name: Show info
+      run: |
+        echo registry: ${{ inputs.registry }}
+        echo tags: ${{ inputs.tags }}
+        
     - name: Login to google container repo
       uses: docker/login-action@v1 
       with:
