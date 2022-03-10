@@ -24,8 +24,9 @@ runs:
         echo Find readme.md file and copy to temporary directory
         find -iname readme.md -exec cp {} ./_docs \;
         ls -al ./_docs
-        echo Upload docs to Google Cloud Storage
+        echo Removing existing docs for ${{ github.event.repository.name }}
         gsutil -m rm -r gs://prod-econo-cm_docs/${{ github.event.repository.name }}
+        echo Upload docs to Google Cloud Storage for ${{ github.event.repository.name }}
         gsutil -m cp -r _docs gs://prod-econo-cm_docs/${{ github.event.repository.name }}
         echo Remove temporary docs directory
         rm -rf _docs
