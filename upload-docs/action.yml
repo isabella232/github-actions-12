@@ -3,7 +3,7 @@ description: Upload documentation
 
 inputs:
   docs_bucket_sa:
-    description: "Documentatino bucket service account"
+    description: "Documentation bucket service account"
     required: true
     
 runs:
@@ -23,11 +23,10 @@ runs:
         mkdir -p _docs
         echo Find readme.md file and copy to temporary directory
         find -iname readme.md -exec cp {} ./_docs \;
-        cd ./_docs
-        ls -al
+        ls -al ./_docs
         echo Upload docs to Google Cloud Storage
-        gsutil -m cp -R gs://prod-econo-cm_docs/* .
-        cd ..
+        gsutil -m rm -r gs://prod-econo-cm_docs/${{ github.event.repository.name }}
+        gsutil -m cp -r _docs gs://prod-econo-cm_docs/${{ github.event.repository.name }}
         echo Remove temporary docs directory
         rm -rf _docs
         
