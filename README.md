@@ -1,3 +1,6 @@
+---
+id: Economic.FeatureFlagsClient.Dotnet
+---
 # github-actions
 Repository for shared GitHub Actions
 
