@@ -16,6 +16,10 @@ inputs:
   tags:
     description: "List of tags"
     required: true
+  context:
+    description: "Folder containing Dockerfile. Context parameter for docker/build-push-action action"
+    required: true
+    default: "."
     
 runs:
   using: 'composite'
@@ -30,6 +34,6 @@ runs:
     - name: Tag and publish
       uses: docker/build-push-action@v2
       with:
-        context: .
+        context: ${{ inputs.context }}
         push: true
         tags: ${{ inputs.tags }}
