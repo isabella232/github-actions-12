@@ -4,21 +4,11 @@ Repository for shared GitHub Actions
 This repository contains reusable github action jobs that can be used in the GitHub action workflows in other repositories.
 
 ## How to use
-In order to use the actions from this repo, it needs to be cloned, since this is a private repo and GitHub does not have access to it.
-```yaml
-- name: Checkout shared actions
-  uses: actions/checkout@v3
-  with:
-    repository: 'e-conomic/github-actions'
-    ref: 'v2'
-    ssh-key: ${{ secrets.SHARED_GITHUB_ACTIONS_DEPLOY_KEY }}
-    path: '_github-actions'
-```
-No need to change anything in this declaration, but to just in case you're wondering:
-* `ref` -  is a release versino of the repo you want to use. You should always use the [latest version](https://github.com/e-conomic/github-actions/releases)
-* `path` - is the location of the local folder on the runner, where the repo will be cloned
-* `ssh-key` - is a deploy key that is already available in the organization secrets
+Reference required steps in your workflow `yml` files.
 
+Check the latest version in the [releases](https://github.com/e-conomic/github-actions/releases) and suffix the actions with it.
+
+The current documentatino assumes that the latest version is `v4`
 
 ## Actions
 * docker-build-push
@@ -32,7 +22,7 @@ Build docker image and publish
 
 ```yaml
 - name: Docker build and push
-  uses: ./_github-actions/docker-build-push
+  uses: e-conomic/github-actions/docker-build-push@v4
   with:
     password: ${{ secrets.DEVECONOCM_GCR_RW }}
     tags: eu.gcr.io/dev-econo-cm/<project-name-and-version>
@@ -51,7 +41,7 @@ ex.: `companies:${{ github.ref_name }}-${{ env.SHA7 }}`
 Run polaris static application security testing. The action runs on the root folder of the cloned application repository.
 ```yaml
 - name: Static application security testing
-  uses: ./_github-actions/polaris-sast
+  uses: e-conomic/github-actions/polaris-sast@v4
   with:
     api_url: ${{ secrets.POLARIS_API_URL }}
     access_token: ${{ secrets.POLARIS_ACCESS_TOKEN }}
@@ -63,7 +53,7 @@ None
 Upload documentation to docs.e-conomic.ws
 ```yaml
 - name: Upload docs
-  uses: ./_github-actions/upload-docs
+  uses: e-conomic/github-actions/upload-docs@v4
   with:
     docs_bucket_sa: ${{ secrets.DOCS_BUCKET_SA }}
 ```
@@ -74,3 +64,5 @@ None
 If you want to add a new shareable action, please create a pull request containing:
 * Code updates (If you are creating a new action, place it in a new directory)
 * Update of the readme.md reflecting your changes if necessary
+  
+Once the  changes are merged in to the `master` branch, create a release with the new versio number.
