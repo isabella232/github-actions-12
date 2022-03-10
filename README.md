@@ -20,7 +20,7 @@ The current documentatino assumes that the latest version is `v4`
 
 The following examples assume that you have included a github-actions repo checkout in the previous step.
 
-### docker-build-push
+## docker-build-push
 Build docker image and publish
 
 ```yaml
@@ -30,17 +30,17 @@ Build docker image and publish
     password: ${{ secrets.DEVECONOCM_GCR_RW }}
     tags: eu.gcr.io/dev-econo-cm/<project-name-and-version>
 ```
-#### User customizable options
-`tags` - replace **<project-name-and-version>** with you own value.
-ex.: `companies:${{ github.ref_name }}-${{ env.SHA7 }}`
+### User customizable options
+* `context` (optional, default value '.') - Folder containing Dockerfile. Context parameter for docker/build-push-action action
+* `tags` - Replace **<project-name-and-version>** with you own value. (ex.: `companies:${{ github.ref_name }}-${{ env.SHA7 }}`)
   
-  By default github context does not provide short SHA of the commit. There are multiple ways to calculate short SHA and this is just one example. You can add an additional step before calling `docker-build-push` to generate a string formatted SHA containing 7 characters:
+By default github does not provide short SHA of the commit. There are multiple ways to calculate short SHA and this is just one example. You can add an additional step before calling `docker-build-push` to generate a string formatted SHA containing 7 characters:
 ```yaml
 - name: Get commit short SHA
   run: echo SHA7=${GITHUB_SHA::7} >> $GITHUB_ENV
 ```
 
-### polaris-sast
+## polaris-sast
 Run polaris static application security testing. The action runs on the root folder of the cloned application repository.
 ```yaml
 - name: Static application security testing
@@ -49,10 +49,10 @@ Run polaris static application security testing. The action runs on the root fol
     api_url: ${{ secrets.POLARIS_API_URL }}
     access_token: ${{ secrets.POLARIS_ACCESS_TOKEN }}
 ```
-#### User customizable options
-None
+### User customizable options
+_None_
  
-### upload-docs
+## upload-docs
 Upload documentation to docs.e-conomic.ws
 ```yaml
 - name: Upload docs
@@ -60,8 +60,8 @@ Upload documentation to docs.e-conomic.ws
   with:
     docs_bucket_sa: ${{ secrets.DOCS_BUCKET_SA }}
 ```
-#### User customizable options
-None
+### User customizable options
+_None_
   
 ## How to contribute
 If you want to add a new shareable action, please create a pull request containing:
