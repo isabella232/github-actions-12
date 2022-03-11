@@ -19,15 +19,15 @@ runs:
     - name: Upload docs
       shell: bash
       run: |
-        echo Create a temporary directory for docs content
+        echo Creating a temporary directory for docs content
         mkdir -p _docs
-        echo Find readme.md file and copy to temporary directory
+        echo Searching for readme.md file and coping to temporary directory
         find -iname readme.md -exec cp {} ./_docs \;
         ls -al ./_docs
         echo Removing existing docs for ${{ github.event.repository.name }}
-        gsutil -m rm -r gs://prod-econo-cm_docs/${{ github.event.repository.name }}
-        echo Upload docs to Google Cloud Storage for ${{ github.event.repository.name }}
+        gsutil -m rm -r gs://prod-econo-cm_docs/${{ github.event.repository.name }} 2> /dev/null || true
+        echo Uploading docs to Google Cloud Storage for ${{ github.event.repository.name }}
         gsutil -m cp -r _docs gs://prod-econo-cm_docs/${{ github.event.repository.name }}
-        echo Remove temporary docs directory
+        echo Removing temporary docs directory
         rm -rf _docs
         
