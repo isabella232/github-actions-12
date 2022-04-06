@@ -19,15 +19,22 @@ runs:
     - name: Upload docs
       shell: bash
       run: |
-        echo Creating a temporary directory for docs content
-        mkdir -p _docs
-        echo Searching for readme.md file and coping to temporary directory
-        find -iname readme.md -exec cp {} ./_docs \;
-        echo Listing docs directory content
-        ls -al ./_docs
-        echo Removing existing docs for ${{ github.event.repository.name }}
-        gsutil -m rm -r gs://prod-econo-cm_docs/${{ github.event.repository.name }} 2> /dev/null || true
-        echo Uploading docs to Google Cloud Storage for ${{ github.event.repository.name }}
-        gsutil -m cp -r _docs gs://prod-econo-cm_docs/${{ github.event.repository.name }}
-        echo Removing temporary docs directory
-        rm -rf _docs
+        mkdir -p ./_docs-prepare
+
+        echo "Copying README.md file from the root directory"
+        find -maxdepth 1 -iname readme.md -exec cp {} ./_docs-prepare \;
+
+        if [[ -d ./docs ]]
+        then
+            echo "'docs' directory exists, prepearing for upload"
+            cp -R ./docs ./_docs-prepare/
+        fi
+
+        echo "Listing docs prepared directory structure"
+        ls -alR ./_docs-prepare
+
+        echo "Removing existing docs for ${{ github.event.repository.name }}"
+        gsutil -m rm -r gs://prod-econo-cm_docs/${{ github.event.repository.name }} 2>&1 || true
+
+        echo "Uploading docs to Google Cloud Storage for ${{ github.event.repository.name }}"
+        gsutil -m cp -r ./_docs-prepare gs://prod-econo-cm_docs/${{ github.event.repository.name }}
