@@ -183,6 +183,5 @@ If you want to add a new shareable action, please create a pull request containi
 
 ⚠️Important ⚠️
 Once the changes are merged into the `master` branch:
-* Create a release with the new version number. Assign the version number tag in the following format `vX.Y.Z`
-* If you are not changing the major version, you need to move the `vX` tag to the latest commit so that it contains both `vX.Y.Z` and `vX` tags.
-* If you are releasing a new major version, you need to release a semver `vX.0.0` version and also add an additional tag `vX` manually
+* If you have breaking changes, you need to release a new `vX` version
+* If you do not have breaking changes, you need to update the latest `vX` version (move the tag to latest commit) and release the `vX.Y` minor version as well
