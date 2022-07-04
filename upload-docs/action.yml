@@ -16,7 +16,12 @@ runs:
         service_account_key: ${{ inputs.docs_bucket_sa }}
         export_default_credentials: true
 
-    - name: Upload docs
+    - uses: actions/checkout@v3
+      with:
+        repository: e-conomic/github-actions
+        path: _github-actions
+
+    - name: Prepare docs
       shell: bash
       run: |
         mkdir -p ./_docs-prepare
@@ -27,12 +32,36 @@ runs:
         if [[ -d ./docs ]]
         then
             echo "'docs' directory exists, prepearing for upload"
-            cp -R ./docs ./_docs-prepare/
+            cp -vR ./docs/** ./_docs-prepare/
         fi
 
         echo "Listing docs prepared directory structure"
         ls -alR ./_docs-prepare
 
+    - uses: actions/setup-node@v3
+      with:
+        node-version: lts/*
+
+    - name: Prepare docs for validation
+      shell: bash
+      run: |
+        cp -vR ./_docs-prepare/** ./_github-actions/upload-docs/docusaurus/docs/
+
+    - name: Install packages
+      shell: bash
+      working-directory: ./_github-actions/upload-docs/docusaurus
+      run: |
+        npm ci
+
+    - name: Build docs
+      shell: bash
+      working-directory: ./_github-actions/upload-docs/docusaurus
+      run: |
+        npm run build
+
+    - name: Upload docs
+      shell: bash
+      run: |
         echo "Removing existing docs for ${{ github.event.repository.name }}"
         gsutil -m rm -r gs://prod-econo-cm_docs/${{ github.event.repository.name }} 2>&1 || true
 
