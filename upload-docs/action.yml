@@ -44,26 +44,27 @@ runs:
 
     - name: Prepare docs for validation
       shell: bash
-      run: |
-        cp -vR ./_docs-prepare/** ./_github-actions/upload-docs/docusaurus/docs/
+      run: cp -vR ./_docs-prepare/** ./_github-actions/upload-docs/docusaurus/docs/
 
     - name: Install packages
       shell: bash
       working-directory: ./_github-actions/upload-docs/docusaurus
-      run: |
-        npm ci
+      run: npm ci
 
     - name: Build docs
       shell: bash
       working-directory: ./_github-actions/upload-docs/docusaurus
-      run: |
-        npm run build
+      run: npm run build
+
+    - name: Set folder name
+      shell: bash
+      id: folder
+      run: echo ::set-output name=name::${GITHUB_REPOSITORY##*/}
+
+    - name: Remove existing docs
+      shell: bash
+      run: gsutil -m rm -r gs://prod-econo-cm_docs/${{ steps.folder.outputs.name }} 2>&1 || true
 
     - name: Upload docs
       shell: bash
-      run: |
-        echo "Removing existing docs for ${{ github.event.repository.name }}"
-        gsutil -m rm -r gs://prod-econo-cm_docs/${{ github.event.repository.name }} 2>&1 || true
-
-        echo "Uploading docs to Google Cloud Storage for ${{ github.event.repository.name }}"
-        gsutil -m cp -r ./_docs-prepare gs://prod-econo-cm_docs/${{ github.event.repository.name }}
+      run: gsutil -m cp -r ./_docs-prepare gs://prod-econo-cm_docs/${{ steps.folder.outputs.name }}
